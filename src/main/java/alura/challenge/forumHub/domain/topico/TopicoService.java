@@ -42,6 +42,17 @@ public class TopicoService {
         return topicoRepository.findAll(paginacao).map(t -> topicoMapper.toDTOListar(t));
     }
 
+    public Page<DadosListagemTopicosDTO> listarTodosTopicosAtivos(Pageable paginacao){
+
+        return topicoRepository.findByEstado(true,paginacao).map(t -> topicoMapper.toDTOListar(t));
+    }
+
+    public Page<DadosListagemTopicosDTO> listarTodosTopicosDesativados(Pageable paginacao){
+
+        return topicoRepository.findByEstado(false,paginacao).map(t -> topicoMapper.toDTOListar(t));
+    }
+
+
     public Page<DadosListagemTopicosDTO> listarTopicosPorCurso(Pageable paginacao, String nomeCurso){
 
         var curso = cursoRepository.findCursoByNomeContainsIgnoreCase(nomeCurso);
@@ -49,5 +60,28 @@ public class TopicoService {
 
         return topicoRepository.findByCursoIdWithPagination(curso.getId(),paginacao)
                 .map(t-> topicoMapper.toDTOListar(t));
+    }
+
+    public DadosDetalhamentoTopicoDTO atualizarTopico(DadosAtualizarTopicoDTO dados){
+
+        var topico = topicoRepository.getReferenceById(dados.id());
+
+        topico.atualizarInformacoes(dados);
+
+        return topicoMapper.toDTO(topico);
+    }
+
+    public void excluirTopico(Long id){
+
+        topicoRepository.findById(id).orElseThrow(() -> new ValidacaoException("Tópico não encontrado"));
+
+        topicoRepository.deleteById(id);
+    }
+
+    public void desativarTopico(Long id){
+
+        var topico = topicoRepository.getReferenceById(id);
+
+        topico.desativarTopico(id);
     }
 }

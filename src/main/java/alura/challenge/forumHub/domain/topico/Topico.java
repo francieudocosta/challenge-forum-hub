@@ -33,4 +33,22 @@ public class Topico {
     @JoinColumn(name = "curso_id")
     @Setter
     private Curso curso;
+
+    public void atualizarInformacoes(DadosAtualizarTopicoDTO dados) {
+
+        if(dados.titulo() != null){
+
+            this.titulo = dados.titulo();
+        }
+
+        if(dados.mensagem() != null){
+
+            this.mensagem = dados.mensagem();
+        }
+    }
+
+    public void desativarTopico(Long id) {
+
+        this.estado = false;
+    }
 }

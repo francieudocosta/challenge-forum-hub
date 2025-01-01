@@ -28,9 +28,26 @@ public class TopicoController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DadosListagemTopicosDTO>> listar(@PageableDefault(size=10, page=0, sort={"data"}, direction = Sort.Direction.DESC) Pageable paginacao){
+    public ResponseEntity<Page<DadosListagemTopicosDTO>> listar(@PageableDefault(size=10, page=0, sort={"data"},
+            direction = Sort.Direction.DESC) Pageable paginacao){
 
         return ResponseEntity.ok(topicoService.listarTodosTopicos(paginacao));
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<Page<DadosListagemTopicosDTO>> listarTopicosAtivos(@PageableDefault(size=10, page=0, sort={"data"},
+            direction = Sort.Direction.DESC) Pageable paginacao){
+
+        return ResponseEntity.ok(topicoService.listarTodosTopicosAtivos(paginacao));
+
+    }
+
+    @GetMapping("/desativados")
+    public ResponseEntity<Page<DadosListagemTopicosDTO>> listarTopicosDesativados(@PageableDefault(size=10, page=0, sort={"data"},
+            direction = Sort.Direction.DESC) Pageable paginacao){
+
+        return ResponseEntity.ok(topicoService.listarTodosTopicosDesativados(paginacao));
+
     }
 
     @GetMapping("/{nome}")
@@ -39,5 +56,32 @@ public class TopicoController {
         var dto = topicoService.listarTopicosPorCurso(paginacao, nome);
 
         return  ResponseEntity.ok(dto);
+    }
+
+    @PutMapping
+    @Transactional
+    public ResponseEntity<DadosDetalhamentoTopicoDTO> atualizar(@RequestBody @Valid DadosAtualizarTopicoDTO dados){
+
+        var topicoAtualizado = topicoService.atualizarTopico(dados);
+
+        return  ResponseEntity.ok(topicoAtualizado);
+    }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public ResponseEntity<Void> excluir(@PathVariable Long id){
+
+        topicoService.excluirTopico(id);
+
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/desativar/{id}")
+    @Transactional
+    public ResponseEntity<Void> desativar(@PathVariable Long id){
+
+        topicoService.desativarTopico(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

@@ -2,7 +2,7 @@ package alura.challenge.forumHub.domain.topico;
 
 import jakarta.validation.constraints.NotNull;
 
-public record DadosAtualizarTopico(
+public record DadosAtualizarTopicoDTO(
 
         @NotNull
         Long id,

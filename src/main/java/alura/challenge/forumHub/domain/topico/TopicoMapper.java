@@ -1,8 +1,6 @@
 package alura.challenge.forumHub.domain.topico;
 
-import alura.challenge.forumHub.domain.curso.Curso;
 import alura.challenge.forumHub.domain.curso.CursoMapper;
-import alura.challenge.forumHub.domain.curso.DadosDetalhadoCursoDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
